@@ -1,0 +1,77 @@
+//**********************************************************
+//*  holaMundo
+//**********************************************************
+//*  Trabajo de Tesis Tecnologo en Telecomunicaciones
+//*  Factem Usach
+//*  Abril 2017
+//*  C, MPLAB X IDE V4.15 Termite , Hyperterminal
+//**********************************************************
+//*  This is program configure UART to 9600 BPS
+//*  send for the port  the massaje "Hola Mundo"
+//*  El mensaje esta almacenado en la memoria de programa
+//*  can be utilice for do one test of Tx
+//**********************************************************
+
+#include <xc.h>
+#include <p18f4520.h>
+//#pragma config DEBUG = ON 
+//#pragma config FOSC = HS
+//#define _XTAL_FREQ 8000000
+#pragma config OSC = HS
+#define _XTAL_FREQ 10000000
+
+
+
+
+
+#define BOTON RA1
+#define LED RA0
+
+//estados del led
+#define ON 1
+#define OFF 0
+
+
+void main(void) {
+    
+   
+    unsigned long a=0;
+    a++;
+    a=3;
+    
+    ADCON0bits.ADON = 0;
+    TRISAbits.TRISA0 = 0;
+ //   TRISAbits.TRISA1 = 1;
+    TRISA1 = 1;
+    CMCON = 0x07 ; //desconectar comparadores
+    ADCON1 = 0x0F ; //configurar entradas asociadas a los pines del ADC como digitales.
+    
+    int estado = OFF;
+    int boton_prev = 1;
+    
+    //config usart
+    RCSTAbits.SPEN = 1;
+    TRISCbits.TRISC7 = 1;
+    TRISCbits.TRISC6 = 1;
+    
+    //set baudrate
+      TXSTAbits.BRGH = 1;// Asyncronous mode--> high speed
+      SPBRG = 64;  //9600
+    
+      RCSTAbits.SPEN  =1; //ENABLE SERIAL PORT
+      TXSTAbits.TXEN = 1; //ENABLE TX
+      RCSTAbits.CREN = 1; //ENABLE RX
+     
+      int i = 0;
+      int j = 0;
+      char buffer[] = "hola mundo!";
+      while(1)
+      {
+          for(j = 0; j<11;j++)
+         { 
+            TXREG = buffer[j];  
+            for(i = 0; i< 500; i++);
+          } 
+      } 
+return 0;
+}
