@@ -65,13 +65,29 @@ void main(void) {
       int i = 0;
       int j = 0;
       char buffer[] = "hola mundo!";
+      char rx_byte; //reservar espacio para recibir el byte
+      char expected_byte = 'a';
       while(1)
       {
-          for(j = 0; j<11;j++)
-         { 
-            TXREG = buffer[j];  
-            for(i = 0; i< 500; i++);
-          } 
+      //    for(j = 0; j<11;j++)
+      //   { 
+      //      TXREG = buffer[j];  
+      //      for(i = 0; i< 500; i++);
+      //    } 
+      
+      /*Recibir 1 byte (o Char)*/
+      if(PIR1bits.RCIF == 1) //si se ha recibido 1 byte
+      {
+        PIR1bits.RCIF = 0; //bajamos el bit para habilitar futuras recepciones
+        rx_byte = RCREG; // guardamos el valor del byte o char recibido
+        
+        if(rx_byte == expected_byte) //si el byte recibido es el que queremos
+        {
+            //hacer algo, encender un led por ejemplo
+            
+        }
+        
+      }
       } 
 return 0;
 }
