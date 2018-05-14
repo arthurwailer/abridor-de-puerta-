@@ -1,0 +1,71 @@
+#ifndef USART_H
+#define	USART_H
+ 
+void iniciar_usart();//función para habilitar RX TX 
+unsigned char recibe_caracter_usart();//función para la recepción de caracteres
+void envia_caracter_usart(unsigned char);//función para la transmisión de caracteres
+void envia_cadena_usart(char*);//función para la transmisión de cadenas de caracteres
+void recibe_texto(char *Salida, unsigned int largo);
+
+
+///////////////////////////////////////////////
+//inicialización del módulo USART PIC modo asíncrono
+//en una función, a 8bits,a 9600 baudios
+/////////////////////////////////////////////////////
+void iniciar_usart(){
+    TRISCbits.TRISC7=1;// Pin RX input
+    TRISCbits.TRISC6=1;// Pin TX output
+    RCSTAbits.SPEN = 1;
+    RCREG = 1;//Serial port enabled (configures RX and TX pins as serial port pins),Enables receiver.
+    TXSTAbits.BRGH = 1;// 8bits,Transmit enabled, asyncronous mode, High speed
+    SPBRG=64; // 9600baudios SPBRG=(Fosc/(16*baudios))-1 = SPBRG=(10000000/(16*9600))-1 = 64.104
+    TXSTAbits.TXEN = 1; //ENABLE TX
+    RCSTAbits.CREN = 1; //ENABLE RX
+    CMCON = 0x07 ; //desconectar comparadores
+    ADCON1 = 0x0F ; //configurar entradas asociadas a los pines del ADC como digitales.
+    }
+ 
+///////////////////////////////////////////////
+//recepción de datos del módulo USART PIC modo asíncrono
+////////////////////////////////////////////////////////////
+unsigned char recibe_caracter_usart(){
+    if(PIR1bits.RCIF==1){//si el bit5 del registro PIR1 se ha puesto a 1
+    return RCREG;//devuelve el dato almacenado en el registro RCREG
+    }
+    else//sino
+        return;//retorna sin hacer nada
+}
+ 
+///////////////////////////////////////////////
+//transmisión de datos del módulo USART PIC modo asíncrono
+///////////////////////////////////////////////
+void envia_caracter_usart(unsigned char caracter){
+        while(TXSTAbits.TRMT==0);// mientras el registro TSR esté lleno espera
+	TXREG = caracter;//cuando el el registro TSR está vacio se envia el caracter
+}
+ 
+ 
+///////////////////////////////////////////////
+//transmisión de cadenas de caracteres con el módulo USART PIC modo asíncrono
+///////////////////////////////////////////////
+void envia_cadena_usart(char* cadena){//cadena de caracteres de tipo char
+    while(*cadena !=0x00){//mientras el último valor de la cadena sea diferente
+                          //de el caracter nulo
+        envia_caracter_usart(*cadena);//transmite los caracteres de cadena
+        cadena++;//incrementa la ubicación de los caracteres en cadena
+                 //para enviar el siguiente caracter de cadena
+    }
+}
+//////////////////////////////////////////////////////////
+//////receptcopn de cadena de caracteres con el modulo USART PIC 
+//////////////////////////////////////////////////////////
+void recibe_texto(char *cadena, unsigned int largo){
+    unsigned int i;
+    for(i=0;i<largo;i++)
+    {
+        cadena[i] = recibe_caracter_usart();
+    }
+ 
+}
+
+#endif	/* USART_H */
