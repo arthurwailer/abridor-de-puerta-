@@ -1,0 +1,104 @@
+/*
+ * File:   main.c
+ * Author: HP
+ *
+ * Created on 9 de mayo de 2018, 14:48
+ */
+
+
+#include <xc.h>
+#include <p18f4520.h>
+#include "usart.h"
+
+#include <plib/usart.h>
+
+
+
+#pragma config OSC = HS
+#define _XTAL_FREQ 10000000
+#define LED RD1
+
+ 
+void main(void) {
+    ////////////////////////////////////////////////////////
+    //Funcion para hacer un eco envio y recibo una respuesta (eco)
+    ////////////////////////////////////////////////////////
+    
+    /*TRISDbits.TRISD1=0; // 
+    iniciar_usart();
+    __delay_ms(1000);
+     unsigned char bienvenida[]="Welcome to BoxTrader\n";
+    envia_cadena_usart((char *)bienvenida);
+    unsigned char cadena[10];
+    unsigned char dato=0;
+    unsigned int i=0;
+    while(1){
+        
+        while(dato!=' '){
+            while(RCIF==0);
+                    dato=recibe_caracter_usart();
+                    cadena[i]=dato;
+                    envia_caracter_usart(dato);
+               }
+            envia_cadena_usart(cadena);
+            i=0;
+            dato=0;
+    }*/
+
+    
+        
+    
+   
+    
+    
+   
+    
+    
+    ///////////////////////////////////////////////////
+    //apagar y encende LED enviando comandos por termite
+    ///////////////////////////////////////////////////  
+   /*unsigned char dato;
+    TRISDbits.TRISD1=0;
+    iniciar_usart();
+    __delay_ms(1000);
+
+    envia_cadena_usart("Ingrese E para encender LED\nIngrese A para apagar el LED\n ");
+    envia_caracter_usart(13);
+    while(1){
+    dato=recibe_caracter_usart();
+    
+    if(dato=='E'){
+        
+        PORTDbits.RD1 = 1;
+        __delay_ms(200);
+        envia_cadena_usart("el led esta encendido");
+        
+        __delay_ms(200);
+        envia_caracter_usart(13);
+        
+    }
+    else if(dato=='A'){
+        
+          PORTDbits.RD1 = 0;
+          envia_cadena_usart("el led esta apagado");
+          envia_caracter_usart(13);
+    }
+    
+    }  */
+    /////////////////////////////////////////
+    // enviar Hola mundo y verlo por termite
+    /////////////////////////////////////////
+    /*iniciar_usart();
+    __delay_ms(1000);
+    while(1){
+       envia_cadena_usart("hola Mundo !!!");//mensaje a enviar al ordenador que sera visto en termite
+                                                              
+                                                  
+       envia_caracter_usart(13);//para el salto de linea
+       __delay_ms(200);//el mensaje será enviado cada 200ms
+    }*/
+    
+    return;
+}
+    
+    
